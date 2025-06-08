@@ -4,7 +4,7 @@ A machine learning-powered tool to predict whether a diabetic patient is likely 
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 diabetes-readmission-predictor/
 ├── data/               # Raw and cleaned data
 ├── notebooks/          # Notebooks for EDA & modeling
