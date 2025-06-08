@@ -5,6 +5,8 @@ A machine learning-powered tool to predict whether a diabetic patient is likely 
 ---
 
 ## Project Structure
+
+```text
 diabetes-readmission-predictor/
 ├── data/               # Raw and cleaned data
 ├── notebooks/          # Notebooks for EDA & modeling
@@ -13,10 +15,10 @@ diabetes-readmission-predictor/
 ├── reports/            # Final report, plots, insights
 ├── requirements.txt    # Project dependencies
 └── README.md           # Project overview
-
+```
 ---
 
-## 🚀 Features
+## Features
 
 - 📊 Data upload & preview
 - 🔍 Predict 30-day readmission
