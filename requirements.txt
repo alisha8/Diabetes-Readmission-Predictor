@@ -1,0 +1,13 @@
+(starter pack)
+
+pandas
+numpy
+scikit-learn
+matplotlib
+seaborn
+streamlit
+shap
+xgboost
+plotly
+joblib
+umap-learn
