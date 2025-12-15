@@ -2,6 +2,8 @@
 
 A machine learning-powered tool to predict whether a diabetic patient is likely to be readmitted to a hospital within 30 days, based on their clinical, demographic, and treatment information.
 
+## Author
+------ Alisha ------
 ---
 
 ## Project Structure
