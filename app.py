@@ -5,6 +5,16 @@ import re
 import joblib
 from Scripts.preprocessing_module import preprocess_single_input
 from Scripts.LOS_Regression import run_linear_regression, run_random_forest, run_xgboost
+from pathlib import Path
+
+eda_report_dir = "Reports/EDA_reports"
+grp_report_dir = "Reports/Group_Analysis_reports"
+model_report_dir = "Reports/Model_reports"
+cluster_report_dir = "Reports/Cluster_reports"
+
+clean_data_dir = "Data/clean"
+split_data_dir = "Data/split_data"
+model_dir = "Models/trained"
 
 def normalize_string(s):
     # Replace _ and - with space, remove extra spaces, and lowercase everything
@@ -29,11 +39,10 @@ def eda_view():
     This section provides a comprehensive look at the dataset's structure and distributions.
     EDA helps uncover important patterns, spot anomalies, and guide feature engineering for better predictions.
     """)
-    report_folder = "/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Reports/EDA_reports"
 
     image_files = [
-        os.path.join(report_folder, f)
-        for f in os.listdir(report_folder)
+        os.path.join(eda_report_dir, f)
+        for f in os.listdir(eda_report_dir)
         if f.lower().endswith(('.png', '.jpg', '.jpeg'))
     ]
 
@@ -41,7 +50,7 @@ def eda_view():
         for img_path in image_files:
             st.image(img_path, caption=os.path.basename(img_path), use_container_width=True)
     else:
-        st.warning(f"⚠️ No image files found in '{report_folder}/'.")
+        st.warning(f"⚠️ No image files found in '{eda_report_dir}/'.")
 
 def group_view():
     st.title("👥 Group Analysis")  
@@ -51,17 +60,16 @@ def group_view():
     Group analysis helps identify high-risk populations and tailor interventions more effectively.
     """)
 
-    report_folder = "/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Reports/Group_Analysis_reports"
     image_files = [
-        os.path.join(report_folder, f)
-        for f in os.listdir(report_folder)
+        os.path.join(grp_report_dir, f)
+        for f in os.listdir(grp_report_dir)
         if f.lower().endswith(('.png', '.jpg', '.jpeg'))
     ]
     if image_files:
         for img_path in image_files:
             st.image(img_path, caption=os.path.basename(img_path), use_container_width=True)
     else:
-        st.warning(f"⚠️ No image files found in '{report_folder}/'.")
+        st.warning(f"⚠️ No image files found in '{grp_report_dir}/'.")
     
 def feature_insight_view():
     st.title("🔍 Feature Insight")
@@ -71,21 +79,19 @@ def feature_insight_view():
     selected_model = st.selectbox("Select Model", model_names)
     normalized_model = normalize_string(selected_model)
 
-    report_folder = "/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Reports/Model_reports"
-
     matching_images = []
-    for f in os.listdir(report_folder):
+    for f in os.listdir(model_report_dir):
         filename_no_ext = os.path.splitext(f)[0]
         normalized_filename = normalize_string(filename_no_ext)
 
         if normalized_filename.startswith(normalized_model) and f.lower().endswith(('.png', '.jpg', '.jpeg')):
-            matching_images.append(os.path.join(report_folder, f))
+            matching_images.append(os.path.join(model_report_dir, f))
 
     if matching_images:
         for img_path in matching_images:
             st.image(img_path, caption=os.path.basename(img_path), use_container_width=True)
     else:
-        st.warning(f"⚠️ No report images found for '{selected_model}' in '{report_folder}/'.")
+        st.warning(f"⚠️ No report images found for '{selected_model}' in '{model_report_dir}/'.")
 
 def patient_cluster_view():
     st.title("🧬 Patient Clustering Analysis")
@@ -96,24 +102,24 @@ def patient_cluster_view():
     """)
 
     st.subheader("UMAP 3D Cluster Visualization")
-    st.image("/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Reports/Cluster_reports/Cluster(UMAP_3D).png", use_container_width=True, caption="UMAP 3D Projection of Patient Clusters")
+    st.image(cluster_report_dir / "Cluster(UMAP_3D).png", use_container_width=True, caption="UMAP 3D Projection of Patient Clusters")
 
     st.subheader("UMAP 2D Clustering")
-    st.image("/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Reports/Cluster_reports/Cluster(UMAP).png", use_container_width=True, caption="UMAP 2D Visualization of Patient Clusters")
+    st.image(cluster_report_dir / "Cluster(UMAP).png", use_container_width=True, caption="UMAP 2D Visualization of Patient Clusters")
 
 
 # Load the models
 @st.cache_resource
 def load_models():
-    logistic = joblib.load('/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Models/trained/Logistic_model.pkl')
-    rf = joblib.load('/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Models/trained/Random_Forest_model.pkl')
-    xgb = joblib.load('/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Models/trained/XGBoost_model.pkl')
+    logistic = joblib.load(model_dir+'/Logistic_model.pkl')
+    rf = joblib.load(model_dir+'/Random_Forest_model.pkl')
+    xgb = joblib.load(model_dir+'/XGBoost_model.pkl')
     return logistic, rf, xgb
 
 Logistic_model, Random_Forest_model, XGBoost_model = load_models()
 
 # Load feature columns
-feature_columns = joblib.load('/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Data/split_data/feature_columns.pkl')
+feature_columns = joblib.load(split_data_dir+'/feature_columns.pkl')
 
 ############# Page layout
 st.set_page_config(page_title="Readmission Predictor", layout="wide")
@@ -150,7 +156,7 @@ if menu == "Home":
 elif menu == "Upload CSV":
     st.title("📂 Uploaded Dataset: Preview & Info")
     try:
-        df = pd.read_csv("Data/clean/Clean_data_for_gui.csv") 
+        df = pd.read_csv(clean_data_dir+"/Clean_data_for_gui.csv") 
         st.success("✅ CSV loaded successfully from data folder!")
         st.write("### Preview of Data (first 5 rows)")
         st.dataframe(df.head())

@@ -5,16 +5,22 @@ import shap
 import matplotlib.pyplot as plt 
 import seaborn as sns
 
+from pathlib import Path
 from xgboost import XGBClassifier
 from sklearn.preprocessing import StandardScaler
 from imblearn.over_sampling import SMOTE
 from sklearn.metrics import (precision_recall_curve, classification_report, confusion_matrix, roc_auc_score, f1_score, precision_score, recall_score )
 
+script_dir = Path(__file__).resolve().parent.parent.parent
+data_dir = script_dir / "Data" / "split_data"
+model_dir = script_dir / "Models" / "trained"
+
 # Read data
-x_train = pd.read_csv('/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Data/split_data/X_train.csv')
-x_test = pd.read_csv('/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Data/split_data/X_test.csv')
-y_train = pd.read_csv('/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Data/split_data/Y_train.csv')
-y_test = pd.read_csv('/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Data/split_data/Y_test.csv')
+# Read data
+x_train = pd.read_csv(data_dir / 'X_train.csv')
+x_test = pd.read_csv(data_dir / 'X_test.csv')
+y_train = pd.read_csv(data_dir / 'Y_train.csv')
+y_test = pd.read_csv(data_dir / 'Y_test.csv')
 
 # Scale
 scaler = StandardScaler()
@@ -108,5 +114,5 @@ top_features['Feature'] = top_features['Feature'].apply(shorten_name)
 #print(top_features)
 
 # Save trained model
-joblib.dump(top_features['Feature'].tolist(), '/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Models/trained/XGBoost_model_features.pkl')
-joblib.dump(xgb, '/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Models/trained/XGBoost_model.pkl')
+joblib.dump(top_features['Feature'].tolist(), model_dir /'XGBoost_model_features.pkl')
+joblib.dump(xgb, model_dir /'XGBoost_model.pkl')

@@ -5,11 +5,14 @@ from sklearn.ensemble import RandomForestRegressor
 from xgboost import XGBRegressor
 from sklearn.metrics import mean_absolute_error, root_mean_squared_error
 from sklearn.model_selection import train_test_split, GridSearchCV
-import io
-import sys
+from pathlib import Path
+
+script_dir = Path(__file__).resolve().parent.parent
+clean_data_dir = script_dir / "Data" / "clean"
+split_data_dir = script_dir / "Data" / "split_data"
 
 def load_data():
-    df = pd.read_csv('/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Data/clean/Clean_data_for_train(1).csv')
+    df = pd.read_csv(clean_data_dir / 'Clean_data_for_train(1).csv')
     target = 'time_in_hospital'
     features = df.drop(['readmitted_30days', target], axis=1).select_dtypes(include=[np.number])
     X = features

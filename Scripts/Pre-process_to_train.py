@@ -1,9 +1,15 @@
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
+from pathlib import Path 
+
+script_dir = Path(__file__).resolve().parent.parent
+data_dir = script_dir / "Data"
+raw_data_dir = script_dir / "Data" / "raw"
+clean_data_dir = script_dir / "Data" / "clean"
 
 # Load data
-df = pd.read_csv("/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Data/raw/diabetic_data.csv")
+df = pd.read_csv(raw_data_dir / "diabetic_data.csv")
 df.replace("?", np.nan, inplace=True)
 
 # Fill NaN and then map for Max_glu_serum and A1C_result
@@ -31,7 +37,7 @@ for col in num_cols:
     df[col] = df[col].fillna(df[col].median())
 
 # Read ID mappings
-mapping_df = pd.read_csv("/Data/IDS_mapping.csv", header=None)
+mapping_df = pd.read_csv(raw_data_dir / "IDS_mapping.csv", header=None)
 
 def extract_mapping(df, section_name):
     start_idx = df[df[0] == section_name].index[0]
@@ -144,5 +150,5 @@ bool_cols = df.select_dtypes(include='bool').columns
 df[bool_cols] = df[bool_cols].astype(int)
 
 # Save cleaned data
-df.to_csv("/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Data/clean/Clean_data_for_train(1).csv", index=False)
+df.to_csv(clean_data_dir / "Clean_data_for_train(1).csv", index=False)
 print("Cleaned training data saved as 'Data/clean/Clean_data_for_train(1).csv'")

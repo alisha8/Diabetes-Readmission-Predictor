@@ -4,17 +4,21 @@ import shap
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
+from pathlib import Path
 
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score, f1_score, precision_score, recall_score, confusion_matrix, classification_report, precision_recall_curve
 from sklearn.preprocessing import StandardScaler
 from imblearn.over_sampling import SMOTE
 
+script_dir = Path(__file__).resolve().parent.parent.parent
+data_dir = script_dir / "Data" / "split_data"
+model_dir = script_dir / "Models" / "trained"
 # Read data
-x_train = pd.read_csv('/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Data/split_data/X_train.csv')
-x_test = pd.read_csv('/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Data/split_data/X_test.csv')
-y_train = pd.read_csv('/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Data/split_data/Y_train.csv')
-y_test = pd.read_csv('/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Data/split_data/Y_test.csv')
+x_train = pd.read_csv(data_dir / 'X_train.csv')
+x_test = pd.read_csv(data_dir / 'X_test.csv')
+y_train = pd.read_csv(data_dir / 'Y_train.csv')
+y_test = pd.read_csv(data_dir / 'Y_test.csv')
 
 scaler = StandardScaler()
 x_train_scaled = scaler.fit_transform(x_train)
@@ -120,5 +124,5 @@ shap_values = explainer.shap_values(x_test_scaled)
 
 
 # Save the trained model
-joblib.dump(top_features['Feature'].tolist(), '/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Models/trained/Logistic_model_features.pkl')
-joblib.dump(log_reg, '/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Models/trained/Logistic_model.pkl')
+joblib.dump(top_features['Feature'].tolist(), model_dir / 'Logistic_model_features.pkl')
+joblib.dump(log_reg, model_dir / 'Logistic_model.pkl')

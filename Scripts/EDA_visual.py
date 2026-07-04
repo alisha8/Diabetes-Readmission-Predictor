@@ -5,8 +5,13 @@ import numpy as np
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
+from pathlib import Path
 
-df = pd.read_csv("/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Data/clean/Clean_data_for_gui.csv")
+script_dir = Path(__file__).resolve().parent.parent
+clean_data_dir = script_dir / "Data" / "clean"
+split_data_dir = script_dir / "Data" / "split_data"
+
+df = pd.read_csv(clean_data_dir / "Clean_data_for_gui.csv")
 
 # Count Plot — Age vs. Readmission
 sns.countplot(x='age', hue='readmitted', data=df)

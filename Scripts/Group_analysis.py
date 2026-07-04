@@ -1,9 +1,13 @@
 import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
+from pathlib import Path
 
+script_dir = Path(__file__).resolve().parent.parent
+clean_data_dir = script_dir / "Data" / "clean"
+split_data_dir = script_dir / "Data" / "split_data"
 # Read data
-df = pd.read_csv("/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Data/clean/Clean_data_for_train(1).csv")
+df = pd.read_csv(clean_data_dir / "Clean_data_for_train(1).csv")
 
 print(df.groupby('race')['readmitted_30days'].mean())
 print(df.groupby('gender')['readmitted_30days'].mean())

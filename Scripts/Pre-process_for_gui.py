@@ -1,9 +1,15 @@
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
+from pathlib import Path
+
+script_dir = Path(__file__).resolve().parent.parent
+print(script_dir)
+raw_data_dir = script_dir / "Data" / "raw"
+clean_data_dir = script_dir / "Data" / "clean"
 
 # Load raw data
-df = pd.read_csv("/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Data/raw/diabetic_data.csv")
+df = pd.read_csv(raw_data_dir / "diabetic_data.csv")
 # Replace "?" with NaN
 df.replace("?", np.nan, inplace=True)
 
@@ -31,7 +37,7 @@ df = df[df['gender'] != 'Unknown/Invalid']
 #df = df[df['discharge_disposition_id'] != 11]
 
 # Load IDS_mapping.csv and split it into 3 chunks
-mapping_df = pd.read_csv("/Data/raw/IDS_mapping.csv", header=None)
+mapping_df = pd.read_csv(raw_data_dir / "IDS_mapping.csv", header=None)
 df = df[df['discharge_disposition_id'] != 11]
 
 def extract_mapping(df, start_col):
@@ -84,5 +90,5 @@ for col in label_cols:
     df[col] = le.fit_transform(df[col])
 
 # Save cleaned file
-df.to_csv("/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Data/clean/Clean_data_for_gui.csv", index=False)
+df.to_csv(clean_data_dir / "Clean_data_for_gui.csv", index=False)
 print("Cleaned data saved as 'Clean_data_for_gui.csv'")

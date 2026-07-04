@@ -7,9 +7,13 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 from mpl_toolkits.mplot3d import Axes3D
+from pathlib import Path
+
+script_dir = Path(__file__).resolve().parent.parent
+clean_data_dir = script_dir / "Data" / "clean"
 
 # 1. Load your data
-df = pd.read_csv('/Users/alishasarkar/Documents/Python Lab/Diabetes_new/Diabetes-Readmission-Predictor/Alisha_Approach/Data/clean/Clean_data_for_train(1).csv')
+df = pd.read_csv(clean_data_dir / 'Clean_data_for_train(1).csv')
 
 # 2. Select relevant features
 features = ['num_lab_procedures', 'num_procedures', 'num_medications', 'max_glu_serum', 'metformin', 'repaglinide', 'nateglinide', 'chlorpropamide', 'glimepiride', 'acetohexamide', 'glipizide',
